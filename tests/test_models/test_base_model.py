@@ -93,7 +93,13 @@ class test_basemodel(unittest.TestCase):
     def test_updated_at(self):
         """ """
         new = self.value()
+        #print(f"before save: {new.updated_at}")
         self.assertEqual(type(new.updated_at), datetime.datetime)
+
+        import time
+        time.sleep(1)
+        new.save()
+
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
