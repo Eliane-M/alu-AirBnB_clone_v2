@@ -3,13 +3,17 @@
 file to practice use of Fabric
 """
 import os.path
-from fabric.api import *
+from fabric.api import env, local
 from fabric.operations import run, put, sudo
 import time
 env.hosts = ['52.90.98.156', '52.207.85.204']
 
 
 def do_pack():
+    """
+    a Fabric script that generates a .tgz archive from the contents of the
+    web_static folder of your AirBnB Clone repo, using the function do_pack.
+    """
     timestr = time.strftime("%Y%m%d%H%M%S")
     try:
         local("mkdir -p versions")

@@ -10,8 +10,8 @@ from datetime import datetime
 @task
 def do_pack():
   """
-    a Fabric script that generates a .tgz archive from the contents of the
-    web_static folder of your AirBnB Clone repo, using the function do_pack.
+  a Fabric script that generates a .tgz archive from the contents of the
+  web_static folder of your AirBnB Clone repo, using the function do_pack.
   """
   timestr = datetime.strftime("%Y%m%d%H%M%S")
   try:
