@@ -8,11 +8,11 @@ using 1-pack_web_static.py
 from fabric.api import env, run, put, local
 from os.path import exists, isdir
 from datetime import datetime
+import os
+from fabric.api import *
 env.hosts = ['54.160.49.83', '3.90.189.37']
 
 
-import os
-from fabric.api import *
 
 env.hosts = ['54.152.171.203', '18.208.222.249']
 
