@@ -20,10 +20,6 @@ sudo echo "<html>
 </html>"|sudo tee /data/web_static/releases/test/index.html
 
 # for the symbolic link
-if [ -L "/data/web_static/current" ]; then
-        sudo rm /data/web_static/current
-fi
-
 sudo ln -fs /data/web_static/releases/test/  /data/web_static/current
 
 # giving ownership to the /data/ folder
