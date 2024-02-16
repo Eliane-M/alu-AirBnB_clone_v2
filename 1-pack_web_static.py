@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 @task
-def do_pack(c):
+def do_pack():
     """
     Creates a .tgz archive from the contents of the web_static folder.
 
