@@ -30,7 +30,8 @@ def do_deploy(archive_path):
 
         put(archive_path, '/tmp/')
         archive_filename = archive_path.split("/")[-1]
-        release_folder = "/data/web_static/releases/{}".format(archive_filename.split(".")[0])
+        release_folder = "/data/web_static/releases/{}".format(
+archive_filename.split(".")[0])
         run("mkdir -p {}".format(release_folder))
         run("tar -xzf /tmp/{} -C {}".format(archive_filename, release_folder))
         run("rm /tmp/{}".format(archive_filename))
