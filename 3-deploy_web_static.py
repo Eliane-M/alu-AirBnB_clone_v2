@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 This is a Fabric script to create and distribute
- an archive to web servers using the deploy function.
+an archive to web servers using the deploy function.
 """
 
 from fabric.api import task, env, run, put
@@ -11,10 +11,14 @@ from os.path import isfile
 import pack_web_static
 import do_deploy_web_static
 
+"""
+    output
+"""
 output['running'] = False
 output['warnings'] = False
 output['stdout'] = False
 output['stderr'] = False
+
 
 @task
 def deploy():
