@@ -1,14 +1,13 @@
 #!/usr/bin/python3
 """
-This is a Fabric script to create and distribute an archive to web servers using the deploy function.
+This is a Fabric script to create and distribute
+ an archive to web servers using the deploy function.
 """
 
 from fabric.api import task, env, run, put
 from fabric.state import output
 from fabric.colors import green, red
 from os.path import isfile
-
-# Importing modules with modified names
 import pack_web_static
 import do_deploy_web_static
 
@@ -25,7 +24,6 @@ def deploy():
     Returns:
         bool: True if deployment is successful, False otherwise.
     """
-    # Call the do_pack function and store the path of the created archive
     archive_path = pack_web_static.do_pack()
 
     if not archive_path or not isfile(archive_path):
@@ -33,8 +31,6 @@ def deploy():
         return False
 
     print(green("Archive created: {}".format(archive_path)))
-
-    # Call the do_deploy function using the new path of the new archive
     deployment_result = do_deploy_web_static.do_deploy(archive_path)
 
     if deployment_result:
@@ -45,9 +41,8 @@ def deploy():
         return False
 
 if __name__ == "__main__":
-    # Set your server IP addresses, username, and private key
-    env.hosts = ['<IP web-01>', '<IP web-02>']
-    env.user = '<your_username>'
-    env.key_filename = '<path_to_your_private_key>'
+    env.hosts = ['54.152.171.203', '18.208.222.249']
+    env.user = 'ubuntu'
+    env.key_filename = '/root/.ssh/school'
 
     deploy()
