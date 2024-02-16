@@ -36,6 +36,7 @@ def do_deploy(archive_path):
         run("mv {}/web_static/* {}".format(release_folder, release_folder))
         run("rm -rf /data/web_static/current")
         run("ln -s {} /data/web_static/current".format(release_folder))
+        run("ls -la /data/web_static/current")
 
         print("New version deployed!")
         return True
