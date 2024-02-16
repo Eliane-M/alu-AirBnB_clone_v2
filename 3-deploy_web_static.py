@@ -1,55 +1,48 @@
 #!/usr/bin/python3
 """
-file to practice use of Fabric
+This is a Fabric script to create and distribute an archive to web servers using the deploy function.
 """
-import os.path
-from fabric.api import env, local
-from fabric.operations import run, put, sudo
-import time
-env.hosts = ['52.90.98.156', '52.207.85.204']
 
+from fabric.api import task
+from fabric.state import output
+from fabric.colors import green, red
+from os.path import isfile
+from fabric.operations import local
 
-def do_pack():
-    """
-    a Fabric script that generates a .tgz archive from the contents of the
-    web_static folder of your AirBnB Clone repo, using the function do_pack.
-    """
-    timestr = time.strftime("%Y%m%d%H%M%S")
-    try:
-        local("mkdir -p versions")
-        local("tar -cvzf versions/web_static_{}.tgz web_static/".
-              format(timestr))
-        return ("versions/web_static_{}.tgz".format(timestr))
-    except:
-        return None
+from 1-pack_web_static import do_pack
+from 2-do_deploy_web_static import do_deploy
 
+output['running'] = False
+output['warnings'] = False
+output['stdout'] = False
+output['stderr'] = False
 
-def do_deploy(archive_path):
-    """ deploy """
-    if (os.path.isfile(archive_path) is False):
-        return False
-
-    try:
-        new_comp = archive_path.split("/")[-1]
-        new_folder = ("/data/web_static/releases/" + new_comp.split(".")[0])
-        put(archive_path, "/tmp/")
-        run("sudo mkdir -p {}".format(new_folder))
-        run("sudo tar -xzf /tmp/{} -C {}".
-            format(new_comp, new_folder))
-        run("sudo rm /tmp/{}".format(new_comp))
-        run("sudo mv {}/web_static/* {}/".format(new_folder, new_folder))
-        run("sudo rm -rf {}/web_static".format(new_folder))
-        run('sudo rm -rf /data/web_static/current')
-        run("sudo ln -s {} /data/web_static/current".format(new_folder))
-        return True
-    except:
-        return False
-
-
+@task
 def deploy():
-    try:
-        archive_address = do_pack()
-        val = do_deploy(archive_address)
-        return val
-    except:
+    """
+    Create and distribute an archive to web servers using do_pack and do_deploy.
+
+    Returns:
+        bool: True if deployment is successful, False otherwise.
+    """
+    # Call the do_pack function and store the path of the created archive
+    archive_path = do_pack()
+
+    if not archive_path or not isfile(archive_path):
+        print(red("Failed to create archive. Deployment aborted."))
         return False
+
+    print(green("Archive created: {}".format(archive_path)))
+
+    # Call the do_deploy function using the new path of the new archive
+    deployment_result = do_deploy(archive_path)
+
+    if deployment_result:
+        print(green("Deployment successful!"))
+        return True
+    else:
+        print(red("Deployment failed."))
+        return False
+
+if __name__ == "__main__":
+    deploy()
