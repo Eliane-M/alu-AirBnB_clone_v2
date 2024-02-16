@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# generates an archive out of web-static folder
+"""
+generates an archive out of web-static folder
+"""
 
 from fabric import task as fabric_task
 from fabric.operations import local
