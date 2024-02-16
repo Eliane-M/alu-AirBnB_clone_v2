@@ -4,9 +4,8 @@ This is a Fabric script to distribute
 an archive to web servers using the function do_deploy.
 """
 
-from fabric.api import env, run, put, local, task
+from fabric.api import env, run, put, task
 from os.path import exists
-from datetime import datetime
 
 env.hosts = ['54.152.171.203', '18.208.222.249']
 env.user = 'ubuntu'
