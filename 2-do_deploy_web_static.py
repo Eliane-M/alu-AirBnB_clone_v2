@@ -11,6 +11,7 @@ from datetime import datetime
 env.hosts = ['54.152.171.203', '18.208.222.249']
 env.user = 'ubuntu'
 
+
 @task
 def do_deploy(archive_path):
     """
@@ -42,3 +43,4 @@ def do_deploy(archive_path):
     except Exception as e:
         print(e)
         return False
+    
