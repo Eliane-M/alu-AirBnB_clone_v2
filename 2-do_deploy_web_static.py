@@ -2,9 +2,10 @@
 """
 a Fabric script to distribute
 an archive to web servers using the function do_deploy.
+using 1-pack_web_static.py
 """
 
-from fabric.api import env, run, put, task
+from fabric.api import env, run, put, local
 from os.path import exists, isdir
 from datetime import datetime
 env.hosts = ['54.160.49.83', '3.90.189.37']
@@ -60,6 +61,14 @@ def do_deploy(archive_path):
 
         print("New version deployed!")
         return True
-    except Exception as e:
-        print(e)
+    except:
+	return False
+
+def deploy():
+    """
+    creates and distributes an archive to the web servers
+    """
+    archive_path = do_pack()
+    if archive_path is None:
         return False
+    return do_deploy(archive_path)
