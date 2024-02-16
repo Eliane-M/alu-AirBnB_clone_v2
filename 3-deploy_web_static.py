@@ -1,52 +1,54 @@
 #!/usr/bin/python3
 """
-This is a Fabric script to create and distribute
-an archive to web servers using the deploy function.
+Fabric script based on the file 2-do_deploy_web_static.py that creates and
+distributes an archive to the web servers
+
+execute: fab -f 3-deploy_web_static.py deploy -i ~/.ssh/id_rsa -u ubuntu
 """
 
-from fabric.api import task, env
-from fabric.state import output
-from fabric.colors import green, red
-from os.path import isfile
-from 1-pack_web_static import do_pack
-from 2-do_deploy_web_static import do_deploy
+from fabric.api import env, local, put, run
+from datetime import datetime
+from os.path import exists, isdir
+env.hosts = ['54.152.171.203', '18.208.222.249']
 
-@task
-def deploy():
-    """
-    Create and distribute an archive to web servers using do_pack and do_deploy.
 
-    Returns:
-        bool: True if deployment is successful, False otherwise.
-    """
-    archive_path = do_pack()
+def do_pack():
+    """generates a tgz archive"""
+    try:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if isdir("versions") is False:
+            local("mkdir versions")
+        file_name = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} web_static".format(file_name))
+        return file_name
+    except:
+        return None
 
-    if not archive_path or not isfile(archive_path):
-        print(red("Failed to create archive. Deployment aborted."))
+
+def do_deploy(archive_path):
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
-
-    print(green("Archive created: {}".format(archive_path)))
-    deployment_result = do_deploy(archive_path)
-
-    if deployment_result:
-        print(green("Deployment successful!"))
+    try:
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
+        path = "/data/web_static/releases/"
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}{}/'.format(path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('rm -rf {}{}/web_static'.format(path, no_ext))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-    else:
-        print(red("Deployment failed."))
+    except:
         return False
 
-if __name__ == "__main__":
-    """
-    Set your server IP addresses, username, and private key
-    """
-    env.hosts = ['54.152.171.203', '18.208.222.249']
-    env.user = 'ubuntu'
-    env.key_filename = '/root/.ssh/school'
 
-    # Output configuration moved inside the if block
-    output['running'] = False
-    output['warnings'] = False
-    output['stdout'] = False
-    output['stderr'] = False
-
-    deploy()
+def deploy():
+    """creates and distributes an archive to the web servers"""
+    archive_path = do_pack()
+    if archive_path is None:
+        return False
+    return do_deploy(archive_path)
