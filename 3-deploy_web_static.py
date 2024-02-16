@@ -36,7 +36,9 @@ def deploy():
         return False
 
 if __name__ == "__main__":
-    # Set your server IP addresses, username, and private key
+    """
+    Set your server IP addresses, username, and private key
+    """
     env.hosts = ['54.152.171.203', '18.208.222.249']
     env.user = 'ubuntu'
     env.key_filename = '/root/.ssh/school'
