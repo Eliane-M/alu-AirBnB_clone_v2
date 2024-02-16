@@ -27,7 +27,7 @@ if [ -L "/data/web_static/current" ]; then
         sudo rm /data/web_static/current
 fi
 
-sudo ln -s /data/web_static/releases/test/  /data/web_static/current
+sudo ln -fs /data/web_static/releases/test/  /data/web_static/current
 
 # giving ownership to the /data/ folder
 sudo chown -R ubuntu:ubuntu /data/
