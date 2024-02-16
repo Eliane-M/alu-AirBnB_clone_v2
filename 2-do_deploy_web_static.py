@@ -9,6 +9,7 @@ from os.path import exists
 
 env.hosts = ['54.152.171.203', '18.208.222.249']
 env.user = 'ubuntu'
+env.key_filename = '/root/.ssh/school'
 
 
 @task
@@ -26,7 +27,6 @@ def do_deploy(archive_path):
         return False
 
     try:
-
         put(archive_path, '/tmp/')
         archive_filename = archive_path.split("/")[-1]
         release_folder = "/data/web_static/releases/{}".format(archive_filename.split(".")[0])
@@ -43,4 +43,3 @@ def do_deploy(archive_path):
     except Exception as e:
         print(e)
         return False
-    
