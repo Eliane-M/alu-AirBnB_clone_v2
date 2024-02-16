@@ -1,33 +1,44 @@
 #!/usr/bin/python3
 """
-This is 2-do_deploy_web_static.py module and houses the 'do_deploy' function.
+This is a Fabric script to distribute
+an archive to web servers using the function do_deploy.
 """
-import os.path
-from fabric.api import env
-from fabric.operations import run, put, sudo
+
+from fabric.api import env, run, put, local, task
+from os.path import exists
+from datetime import datetime
+
 env.hosts = ['54.152.171.203', '18.208.222.249']
+env.user = 'ubuntu'
 
-
+@task
 def do_deploy(archive_path):
     """
-        a Fabric script that generates a .tgz archive from the contents of the
-        web_static folder of your AirBnB Clone repo, using the function do_pack.
+    Distribute an archive to web servers and perform deployment steps.
+
+    Args:
+        archive_path (str): Path to the archive file.
+
+    Returns:
+        bool: True if all operations are successful, False otherwise.
     """
-    if (os.path.isfile(archive_path) is False):
+    if not exists(archive_path):
         return False
 
     try:
-        new_comp = archive_path.split("/")[-1]
-        new_folder = ("/data/web_static/releases/" + new_comp.split(".")[0])
-        put(archive_path, "/tmp/")
-        run("sudo mkdir -p {}".format(new_folder))
-        run("sudo tar -xzf /tmp/{} -C {}".
-            format(new_comp, new_folder))
-        run("sudo rm /tmp/{}".format(new_comp))
-        run("sudo mv {}/web_static/* {}/".format(new_folder, new_folder))
-        run("sudo rm -rf {}/web_static".format(new_folder))
-        run('sudo rm -rf /data/web_static/current')
-        run("sudo ln -s {} /data/web_static/current".format(new_folder))
+
+        put(archive_path, '/tmp/')
+        archive_filename = archive_path.split("/")[-1]
+        release_folder = "/data/web_static/releases/{}".format(archive_filename.split(".")[0])
+        run("mkdir -p {}".format(release_folder))
+        run("tar -xzf /tmp/{} -C {}".format(archive_filename, release_folder))
+        run("rm /tmp/{}".format(archive_filename))
+        run("mv {}/web_static/* {}".format(release_folder, release_folder))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(release_folder))
+
+        print("New version deployed!")
         return True
-    except:
+    except Exception as e:
+        print(e)
         return False
