@@ -4,8 +4,8 @@ generates an archive out of web-static folder
 using do_pack before sending
 """
 
-from fabric import task as fabric_task
-from fabric.operations import local
+from fabric.api import task
+from fabric.api import local
 from datetime import datetime
 
 
