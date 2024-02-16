@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # generates an archive out of web-static folder
 
-
 from fabric import task as fabric_task
 from fabric.operations import local
 from datetime import datetime
 
 
+@task
 def do_pack(c):
     """
     Creates a .tgz archive from the contents of the web_static folder.
@@ -15,12 +15,17 @@ def do_pack(c):
         (str): Archive path if successfully generated, None otherwise.
     """
     try:
-        now = datetime.now()
-        timestamp = now.strftime("%Y%m%d%H%M%S")
-        archive_name = "web_static_{}.tgz".format(timestamp)
+        # Create the versions folder if it doesn't exist
         local("mkdir -p versions")
-        local("tar -czvf versions/{} web_static".format(archive_name))
-        return "versions/{}".format(archive_name)
+
+        # Generate timestamp for the archive name
+        timestr = datetime.now().strftime("%Y%m%d%H%M%S")
+
+        # Create the .tgz archive
+        archive_path = "versions/web_static_{}.tgz".format(timestr)
+        local("tar -cvzf {} web_static/".format(archive_path))
+
+        return archive_path
     except Exception as e:
-        print("Error occurred while creating archive:", e)
+        print(e)
         return None
