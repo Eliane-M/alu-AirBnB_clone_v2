@@ -5,7 +5,7 @@ from fabric import task as fabric_task
 from fabric.operations import local
 from datetime import datetime
 
-@fabric_task
+
 def do_pack(c):
     """
     Creates a .tgz archive from the contents of the web_static folder.
