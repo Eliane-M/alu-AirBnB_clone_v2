@@ -8,8 +8,8 @@ from fabric.api import task, env
 from fabric.state import output
 from fabric.colors import green, red
 from os.path import isfile
-from pack_web_static import do_pack
-from do_deploy_web_static import do_deploy
+from 1-pack_web_static import do_pack
+from 2-do_deploy_web_static import do_deploy
 
 @task
 def deploy():
