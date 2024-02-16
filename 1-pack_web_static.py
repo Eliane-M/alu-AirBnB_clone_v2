@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This is a Fabric script to generate a .tgz 
+This is a Fabric script to generate a .tgz
 archive from the contents of the web_static folder.
 """
 
