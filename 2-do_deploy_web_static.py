@@ -5,14 +5,35 @@ an archive to web servers using the function do_deploy.
 """
 
 from fabric.api import env, run, put, task
-from os.path import exists
-
+from os.path import exists, isdir
+from datetime import datetime
 env.hosts = ['54.160.49.83', '3.90.189.37']
-env.user = 'ubuntu'
-env.key_filename = '/root/.ssh/school'
 
 
-@task
+def do_pack():
+    """
+    Creates a .tgz archive from the contents of the web_static folder.
+
+    Returns:
+        (str): Archive path if successfully generated, None otherwise.
+    """
+    try:
+        # Create the versions folder if it doesn't exist
+        local("mkdir -p versions")
+
+        # Generate timestamp for the archive name
+        timestr = datetime.now().strftime("%Y%m%d%H%M%S")
+
+        # Create the .tgz archive
+        archive_path = "versions/web_static_{}.tgz".format(timestr)
+        local("tar -cvzf {} web_static/".format(archive_path))
+
+        return archive_path
+    except Exception as e:
+        print(e)
+        return None
+
+
 def do_deploy(archive_path):
     """
     Distribute an archive to web servers and perform deployment steps.
@@ -27,11 +48,9 @@ def do_deploy(archive_path):
         return False
 
     try:
-
         put(archive_path, '/tmp/')
         archive_filename = archive_path.split("/")[-1]
-	release_folder = "/data/web_static/releases/{}".format(
-		archive_filename.split(".")[0])
+	release_folder = "/data/web_static/releases/{}".format(archive_filename.split(".")[0])
         run("mkdir -p {}".format(release_folder))
         run("tar -xzf /tmp/{} -C {}".format(archive_filename, release_folder))
         run("rm /tmp/{}".format(archive_filename))
