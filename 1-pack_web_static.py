@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 generates an archive out of web-static folder
+using do_pack before sending
 """
 
 from fabric import task as fabric_task
