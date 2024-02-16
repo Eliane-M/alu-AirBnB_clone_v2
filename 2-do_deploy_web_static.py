@@ -9,7 +9,7 @@ from os.path import exists
 
 env.hosts = ['54.160.49.83', '3.90.189.37']
 env.user = 'ubuntu'
-env.filename = '/root/.ssh/school'
+env.key_filename = '/root/.ssh/school'
 
 
 @task
@@ -31,7 +31,7 @@ def do_deploy(archive_path):
         put(archive_path, '/tmp/')
         archive_filename = archive_path.split("/")[-1]
         release_folder = "/data/web_static/releases/{}".format(
-archive_filename.split(".")[0])
+	archive_filename.split(".")[0])
         run("mkdir -p {}".format(release_folder))
         run("tar -xzf /tmp/{} -C {}".format(archive_filename, release_folder))
         run("rm /tmp/{}".format(archive_filename))
