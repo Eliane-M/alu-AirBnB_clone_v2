@@ -14,7 +14,7 @@ def hello_hbnb():
     flask hello world
     """
     return "Hello HBNB!"
-    strict_slashes=False
+    strict_slashes = False
 
 
 @app.route('/hbnb')
@@ -23,7 +23,7 @@ def hbnb():
     displays HBNB
     """
     return "HBNB"
-    strict_slashes=False
+    strict_slashes = False
 
 
 if __name__ == "__main__":
