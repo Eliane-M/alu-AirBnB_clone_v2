@@ -35,11 +35,13 @@ def c_text(text):
     strict_slashes = False
 
 
+@app.route('/python/')
 @app.route('/python/(<text>)')
-def python_text():
+def python_text(text='is cool'):
     """
     python followed by a text
     """
+    text = text.replace('_', ' ')
     return "Python {}".format(text.replace("_", " "))
     strict_slashes = False
 
