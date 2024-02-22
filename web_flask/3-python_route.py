@@ -35,7 +35,7 @@ def c_text(text):
     strict_slashes = False
 
 
-@app.rote('/python/(<text>)')
+@app.route('/python/(<text>)')
 def python_text():
     """
     python followed by a text
