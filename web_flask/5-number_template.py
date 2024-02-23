@@ -46,12 +46,17 @@ def python_text(text='is cool'):
 
 
 @app.route('/number/<n>')
-def number_n():
+def number_n(n):
     """
     displays n is a number if n is integer
     """
     return "{} is a number".format(c)
     strict_slashes = False
+
+
+@app.route('/number_template/<n>')
+def number_template(n)
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == "__main__":
