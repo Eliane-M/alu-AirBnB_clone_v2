@@ -37,7 +37,7 @@ def c_text(text):
 
 @app.route('/python/')
 @app.route('/python/(<text>)')
-def python_text(text='is cool'):
+def python_text(text = 'is cool'):
     """
     python followed by a text
     """
