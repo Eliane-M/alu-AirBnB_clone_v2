@@ -50,8 +50,7 @@ def number_n():
     """
     displays n is a number if n is integer
     """
-    if n == int:
-        return "{} is a number".format(c)
+    return "{} is a number".format(c)
     strict_slashes = False
 
 
