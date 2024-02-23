@@ -36,7 +36,7 @@ def c_text(text):
 
 
 @app.route('/python/')
-strict_slashes = False
+    strict_slashes = False
 
 
 @app.route('/python/(<text>)')
