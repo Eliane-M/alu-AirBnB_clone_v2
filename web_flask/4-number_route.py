@@ -37,7 +37,7 @@ def c_text(text):
 
 @app.route('/python/')
 @app.route('/python/(<text>)')
-def python_text(text = 'is cool'):
+def python_text(text='is cool'):
     """
     python followed by a text
     """
@@ -52,7 +52,7 @@ def number_n():
     """
     if n == int:
         return "{} is a number".format(c)
-    strict_slashes=False
+    strict_slashes = False
 
 
 if __name__ == "__main__":
