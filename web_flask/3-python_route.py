@@ -41,7 +41,6 @@ def python_text(text='is cool'):
     """
     python followed by a text
     """
-    text = text.replace('_', ' ')
     return "Python {}".format(text.replace("_", " "))
     strict_slashes = False
 
