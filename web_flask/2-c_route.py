@@ -31,7 +31,7 @@ def c_text(text):
     """
     make a simple variable rule
     """
-    return "C {}".format(text.replace("_", " "))
+    return "C {}".format(escape(text).replace("_", " "))
     strict_slashes = False
 
 
