@@ -4,7 +4,7 @@ script starts Flask web app
 listen on 0.0.0.0, port 5000
 """
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -51,7 +51,7 @@ def html_if_int(n):
     return render_template("5-number.html", n=n)
 
 
-@app.route("/number_odd_or_even/<n>")
+@app.route("/number_odd_or_even/<int:n>")
 def even_or_odd(n):
     """
     odd_or_even
