@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Starts Flask web app:
+starts Flask web app:
     listen on 0.0.0.0, port 5000
     routes: /:                    display "Hello HBNB!"
             /hbnb:                display "HBNB"
@@ -41,23 +41,24 @@ def c_text(text):
 @app.route("/python")
 @app.route("/python/<text>")
 def python_text(text="is cool"):
-    """display custom text given
-    first route statement ensures it works for:
-       curl -Ls 0.0.0.0:5000/python ; echo "" | cat -e
-       curl -Ls 0.0.0.0:5000/python/ ; echo "" | cat -e
+    """
+    display custom text given
     """
     return "Python {}".format(text.replace("_", " "))
 
 
 @app.route("/number/<int:n>")
 def text_if_int(n):
-    """display text only if int given"""
+    """
+    display text only if int given
+    """
     return "{:d} is a number".format(n)
 
 
 @app.route("/number_template/<int:n>")
 def html_if_int(n):
-    """display html page only if int given
+    """
+    display html page only if int given
     place given int into html template
     """
     return render_template("5-number.html", n=n)
@@ -65,7 +66,8 @@ def html_if_int(n):
 
 @app.route("/number_odd_or_even/<int:n>")
 def html_odd_or_even(n):
-    """display html page only if int given
+    """
+    display html page only if int given
     place given int into html template
     substitute text to display if int is odd or even
     """
